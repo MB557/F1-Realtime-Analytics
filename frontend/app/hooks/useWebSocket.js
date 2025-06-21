@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import { getApiBaseUrl } from '../utils/apiConfig'
 
 export function useWebSocket(url) {
   const [data, setData] = useState(null)
@@ -14,7 +15,7 @@ export function useWebSocket(url) {
   const isWebSocketDisabled = url === 'disabled' || url?.includes('disabled')
 
   // API base URL for polling fallback
-  const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001'
+  const apiBaseUrl = getApiBaseUrl()
 
   // Polling function to fetch data from API endpoints
   const fetchDataFromAPI = async () => {

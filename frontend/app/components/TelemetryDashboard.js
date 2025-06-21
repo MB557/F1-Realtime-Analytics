@@ -2,14 +2,21 @@
 
 import { useState, useEffect } from 'react'
 import useSWR from 'swr'
+import { getApiBaseUrl } from '../utils/apiConfig'
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
 export default function TelemetryDashboard({ driverNumber, drivers = [] }) {
   const [telemetryHistory, setTelemetryHistory] = useState([])
+  const [apiBaseUrl, setApiBaseUrl] = useState('http://localhost:3001')
+
+  // Set API base URL when component mounts
+  useEffect(() => {
+    setApiBaseUrl(getApiBaseUrl())
+  }, [])
   
   const { data: telemetryData, error } = useSWR(
-    driverNumber ? `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/telemetry/${driverNumber}` : null,
+    driverNumber ? `${apiBaseUrl}/api/telemetry/${driverNumber}` : null,
     fetcher,
     { refreshInterval: 1000 }
   )
