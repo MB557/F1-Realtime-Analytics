@@ -1,0 +1,21 @@
+{
+  "name": "f1-analytics-netlify-functions",
+  "version": "1.0.0",
+  "description": "Netlify Functions for F1 Analytics Platform",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"No tests yet\" && exit 0"
+  },
+  "keywords": [
+    "f1",
+    "analytics",
+    "netlify",
+    "functions",
+    "serverless"
+  ],
+  "author": "F1 Analytics Team",
+  "license": "MIT",
+  "dependencies": {
+    "node-fetch": "^2.6.7"
+  }
+} 
