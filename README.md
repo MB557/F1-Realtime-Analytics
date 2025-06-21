@@ -3,8 +3,6 @@
 A comprehensive Formula 1 analytics platform that provides real-time race data, telemetry, battle detection, and live position tracking using the OpenF1 API.
 
 ## 🎬 Demo
-
-### 🖼️ GIF Demo
 ![F1 Analytics Demo](./assets/f1-analytics-demo-hq.gif)
 
 > **Watch the F1 Analytics Platform in action!** This demo showcases the real-time dashboard with live leaderboard, battle detection, telemetry data, and track positioning - all updating in real-time during an F1 session.
