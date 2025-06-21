@@ -26,22 +26,38 @@ const getApiBaseUrl = () => {
   return process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001'
 }
 
+// Get WebSocket URL with proper fallback for Netlify
+const getWebSocketUrl = () => {
+  // Check if we're in browser and on Netlify (production)
+  if (typeof window !== 'undefined') {
+    // If we're on a netlify.app domain or custom domain (not localhost)
+    if (window.location.hostname.includes('netlify.app') || 
+        !window.location.hostname.includes('localhost')) {
+      console.log('🔧 WebSocket disabled for Netlify deployment')
+      return 'disabled' // This will trigger polling mode
+    }
+  }
+  // Fallback to environment variable or localhost for development
+  return process.env.NEXT_PUBLIC_WS_URL || 'ws://localhost:3002'
+}
+
 export default function Dashboard() {
   const [selectedDriver, setSelectedDriver] = useState(null)
   const [isConnected, setIsConnected] = useState(false)
   const [lastUpdate, setLastUpdate] = useState(null)
   const [apiBaseUrl, setApiBaseUrl] = useState('http://localhost:3001')
+  const [webSocketUrl, setWebSocketUrl] = useState('ws://localhost:3002')
 
-  // Set API base URL when component mounts
+  // Set API base URL and WebSocket URL when component mounts
   useEffect(() => {
     setApiBaseUrl(getApiBaseUrl())
+    setWebSocketUrl(getWebSocketUrl())
     console.log('🔧 API Base URL:', getApiBaseUrl()) // Debug log
+    console.log('🔧 WebSocket URL:', getWebSocketUrl()) // Debug log
   }, [])
 
   // WebSocket connection for real-time updates
-  const { data: wsData, isConnected: wsConnected } = useWebSocket(
-    process.env.NEXT_PUBLIC_WS_URL || 'ws://localhost:3002'
-  )
+  const { data: wsData, isConnected: wsConnected } = useWebSocket(webSocketUrl)
 
   // SWR for initial data and fallback
   const { data: leaderboardData, error: leaderboardError } = useSWR(
