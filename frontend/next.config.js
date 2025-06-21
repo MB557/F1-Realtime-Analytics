@@ -1,14 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Remove deprecated appDir experimental feature
-  // experimental: {
-  //   appDir: true,
-  // },
-  
   // Optimize for Netlify deployment
   output: 'export',
   trailingSlash: true,
-  distDir: 'dist',
+  distDir: 'out',
   
   // Image optimization for static export
   images: {

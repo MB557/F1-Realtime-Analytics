@@ -100,38 +100,110 @@ exports.handler = async (event, context) => {
   // Handle GET request
   if (event.httpMethod === 'GET') {
     try {
-      // Get current session
-      const session = await getCurrentSession();
-      if (!session) {
-        return {
-          statusCode: 200,
-          headers,
-          body: JSON.stringify({
-            success: true,
-            data: [],
-            message: 'No active F1 session found',
-            last_updated: new Date().toISOString()
-          }),
-        };
-      }
-
-      // Get position data
-      const positionData = await getPositionData(session.session_key);
-      
-      // Normalize the data
-      const leaderboard = normalizeLeaderboard(positionData);
+      // For demo purposes, return mock leaderboard data
+      // In production, this would fetch from OpenF1 API
+      const mockLeaderboard = [
+        {
+          position: 1,
+          driverNumber: 1,
+          driverName: "M. Verstappen",
+          teamName: "Red Bull Racing",
+          teamColor: "#3671C6",
+          gap: "0.000",
+          interval: "0.000",
+          lastUpdate: new Date().toISOString(),
+          isRetired: false
+        },
+        {
+          position: 2,
+          driverNumber: 44,
+          driverName: "L. Hamilton",
+          teamName: "Mercedes",
+          teamColor: "#27F4D2",
+          gap: "+8.234",
+          interval: "+8.234",
+          lastUpdate: new Date().toISOString(),
+          isRetired: false
+        },
+        {
+          position: 3,
+          driverNumber: 63,
+          driverName: "G. Russell",
+          teamName: "Mercedes",
+          teamColor: "#27F4D2",
+          gap: "+12.847",
+          interval: "+4.613",
+          lastUpdate: new Date().toISOString(),
+          isRetired: false
+        },
+        {
+          position: 4,
+          driverNumber: 11,
+          driverName: "S. Perez",
+          teamName: "Red Bull Racing",
+          teamColor: "#3671C6",
+          gap: "+15.234",
+          interval: "+2.387",
+          lastUpdate: new Date().toISOString(),
+          isRetired: false
+        },
+        {
+          position: 5,
+          driverNumber: 55,
+          driverName: "C. Sainz",
+          teamName: "Ferrari",
+          teamColor: "#F91536",
+          gap: "+18.567",
+          interval: "+3.333",
+          lastUpdate: new Date().toISOString(),
+          isRetired: false
+        },
+        {
+          position: 6,
+          driverNumber: 16,
+          driverName: "C. Leclerc", 
+          teamName: "Ferrari",
+          teamColor: "#F91536",
+          gap: "+22.123",
+          interval: "+3.556",
+          lastUpdate: new Date().toISOString(),
+          isRetired: false
+        },
+        {
+          position: 7,
+          driverNumber: 4,
+          driverName: "L. Norris",
+          teamName: "McLaren",
+          teamColor: "#F58020",
+          gap: "+25.789",
+          interval: "+3.666",
+          lastUpdate: new Date().toISOString(),
+          isRetired: false
+        },
+        {
+          position: 8,
+          driverNumber: 81,
+          driverName: "O. Piastri",
+          teamName: "McLaren", 
+          teamColor: "#F58020",
+          gap: "+28.456",
+          interval: "+2.667",
+          lastUpdate: new Date().toISOString(),
+          isRetired: false
+        }
+      ];
 
       return {
         statusCode: 200,
         headers,
         body: JSON.stringify({
           success: true,
-          data: leaderboard,
+          data: mockLeaderboard,
           session_info: {
-            session_name: session.session_name,
-            session_type: session.session_type,
-            location: session.location,
-            country_name: session.country_name,
+            session_name: "Demo Race",
+            session_type: "Race",
+            location: "Virtual Circuit",
+            country_name: "Demo Land",
           },
           last_updated: new Date().toISOString()
         }),

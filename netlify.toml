@@ -2,7 +2,7 @@
   # Build command for the frontend
   command = "cd frontend && npm install && npm run build"
   # Directory to publish
-  publish = "frontend/dist"
+  publish = "frontend/out"
   # Base directory
   base = "/"
 
