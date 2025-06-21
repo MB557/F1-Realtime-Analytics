@@ -45,19 +45,19 @@ export default function Dashboard() {
 
   // SWR for initial data and fallback
   const { data: leaderboardData, error: leaderboardError } = useSWR(
-    `${apiBaseUrl}/api/leaderboard`,
+    `${apiBaseUrl}/leaderboard`,
     fetcher,
     { refreshInterval: 5000 }
   )
 
   const { data: battlesData, error: battlesError } = useSWR(
-    `${apiBaseUrl}/api/battles`,
+    `${apiBaseUrl}/battles`,
     fetcher,
     { refreshInterval: 3000 }
   )
 
   const { data: positionsData, error: positionsError } = useSWR(
-    `${apiBaseUrl}/api/positions`,
+    `${apiBaseUrl}/positions`,
     fetcher,
     { refreshInterval: 2000 }
   )
@@ -96,7 +96,7 @@ export default function Dashboard() {
           </div>
           <div className="text-xs text-gray-500 bg-gray-800 p-3 rounded mb-4">
             <div><strong>API URL:</strong> {apiBaseUrl}</div>
-            <div><strong>Trying:</strong> {apiBaseUrl}/api/leaderboard</div>
+                         <div><strong>Trying:</strong> {apiBaseUrl}/leaderboard</div>
             {leaderboardError && (
               <div><strong>Error:</strong> {leaderboardError.message}</div>
             )}

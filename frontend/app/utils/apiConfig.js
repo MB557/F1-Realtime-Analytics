@@ -12,7 +12,7 @@ export const getApiBaseUrl = () => {
   }
   
   // Fallback to environment variable or localhost for development
-  const fallbackUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001'
+  const fallbackUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001/api'
   console.log('🔧 Using fallback API URL:', fallbackUrl)
   return fallbackUrl
 }

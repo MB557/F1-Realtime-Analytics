@@ -16,7 +16,7 @@ export default function TelemetryDashboard({ driverNumber, drivers = [] }) {
   }, [])
   
   const { data: telemetryData, error } = useSWR(
-    driverNumber ? `${apiBaseUrl}/api/telemetry/${driverNumber}` : null,
+    driverNumber ? `${apiBaseUrl}/telemetry/${driverNumber}` : null,
     fetcher,
     { refreshInterval: 1000 }
   )

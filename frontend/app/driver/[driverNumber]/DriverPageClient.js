@@ -19,13 +19,13 @@ export default function DriverPageClient({ driverNumber }) {
   }, [])
 
   const { data: driverData, error: driverError } = useSWR(
-    driverNumber ? `${apiBaseUrl}/api/driver/${driverNumber}` : null,
+    driverNumber ? `${apiBaseUrl}/driver/${driverNumber}` : null,
     fetcher,
     { refreshInterval: 2000 }
   )
 
   const { data: leaderboardData } = useSWR(
-    `${apiBaseUrl}/api/leaderboard`,
+    `${apiBaseUrl}/leaderboard`,
     fetcher,
     { refreshInterval: 5000 }
   )

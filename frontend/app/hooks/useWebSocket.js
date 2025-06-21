@@ -21,9 +21,9 @@ export function useWebSocket(url) {
   const fetchDataFromAPI = async () => {
     try {
       const [leaderboardRes, battlesRes, positionsRes] = await Promise.all([
-        fetch(`${apiBaseUrl}/api/leaderboard`).catch(() => ({ ok: false })),
-        fetch(`${apiBaseUrl}/api/battles`).catch(() => ({ ok: false })),
-        fetch(`${apiBaseUrl}/api/positions`).catch(() => ({ ok: false }))
+        fetch(`${apiBaseUrl}/leaderboard`).catch(() => ({ ok: false })),
+        fetch(`${apiBaseUrl}/battles`).catch(() => ({ ok: false })),
+        fetch(`${apiBaseUrl}/positions`).catch(() => ({ ok: false }))
       ])
 
       const leaderboard = leaderboardRes.ok ? await leaderboardRes.json() : { data: [] }
