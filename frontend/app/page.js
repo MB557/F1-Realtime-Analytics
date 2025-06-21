@@ -12,31 +12,68 @@ import LoadingSpinner from './components/LoadingSpinner'
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
+// Get API base URL with proper fallback for Netlify
+const getApiBaseUrl = () => {
+  // Check if we're in browser and on Netlify (production)
+  if (typeof window !== 'undefined') {
+    // If we're on a netlify.app domain or custom domain (not localhost)
+    if (window.location.hostname.includes('netlify.app') || 
+        !window.location.hostname.includes('localhost')) {
+      return '/.netlify/functions'
+    }
+  }
+  // Fallback to environment variable or localhost
+  return process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001'
+}
+
+// Get WebSocket URL with proper fallback for Netlify
+const getWebSocketUrl = () => {
+  // Check if we're in browser and on Netlify (production)
+  if (typeof window !== 'undefined') {
+    // If we're on a netlify.app domain or custom domain (not localhost)
+    if (window.location.hostname.includes('netlify.app') || 
+        !window.location.hostname.includes('localhost')) {
+      console.log('🔧 WebSocket disabled for Netlify deployment')
+      return 'disabled' // This will trigger polling mode
+    }
+  }
+  // Fallback to environment variable or localhost for development
+  return process.env.NEXT_PUBLIC_WS_URL || 'ws://localhost:3002'
+}
+
 export default function Dashboard() {
   const [selectedDriver, setSelectedDriver] = useState(null)
   const [isConnected, setIsConnected] = useState(false)
   const [lastUpdate, setLastUpdate] = useState(null)
+  const [apiBaseUrl, setApiBaseUrl] = useState('http://localhost:3001')
+  const [webSocketUrl, setWebSocketUrl] = useState('ws://localhost:3002')
+
+  // Set API base URL and WebSocket URL when component mounts
+  useEffect(() => {
+    setApiBaseUrl(getApiBaseUrl())
+    setWebSocketUrl(getWebSocketUrl())
+    console.log('🔧 API Base URL:', getApiBaseUrl()) // Debug log
+    console.log('🔧 WebSocket URL:', getWebSocketUrl()) // Debug log
+  }, [])
 
   // WebSocket connection for real-time updates
-  const { data: wsData, isConnected: wsConnected } = useWebSocket(
-    process.env.NEXT_PUBLIC_WS_URL || 'ws://localhost:3002'
-  )
+  const { data: wsData, isConnected: wsConnected } = useWebSocket(webSocketUrl)
 
   // SWR for initial data and fallback
   const { data: leaderboardData, error: leaderboardError } = useSWR(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/leaderboard`,
+    `${apiBaseUrl}/leaderboard`,
     fetcher,
     { refreshInterval: 5000 }
   )
 
   const { data: battlesData, error: battlesError } = useSWR(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/battles`,
+    `${apiBaseUrl}/battles`,
     fetcher,
     { refreshInterval: 3000 }
   )
 
   const { data: positionsData, error: positionsError } = useSWR(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/positions`,
+    `${apiBaseUrl}/positions`,
     fetcher,
     { refreshInterval: 2000 }
   )
@@ -54,18 +91,67 @@ export default function Dashboard() {
   }, [wsData])
 
   // Get current data (WebSocket takes priority over SWR)
-  const currentLeaderboard = wsData?.data?.leaderboard || leaderboardData || []
-  const currentBattles = wsData?.data?.battles || battlesData || []
-  const currentPositions = wsData?.data?.positions || positionsData || []
+  // Extract data array from API response (API returns { success: true, data: [...] })
+  const currentLeaderboard = Array.isArray(wsData?.data?.leaderboard) 
+    ? wsData.data.leaderboard 
+    : Array.isArray(leaderboardData?.data) 
+      ? leaderboardData.data 
+      : Array.isArray(leaderboardData) 
+        ? leaderboardData 
+        : []
+        
+  const currentBattles = Array.isArray(wsData?.data?.battles) 
+    ? wsData.data.battles 
+    : Array.isArray(battlesData?.data) 
+      ? battlesData.data 
+      : Array.isArray(battlesData) 
+        ? battlesData 
+        : []
+        
+  const currentPositions = Array.isArray(wsData?.data?.positions) 
+    ? wsData.data.positions 
+    : Array.isArray(positionsData?.data) 
+      ? positionsData.data 
+      : Array.isArray(positionsData) 
+        ? positionsData 
+        : []
+
+  // Debug logging
+  console.log('🔧 Data check:', {
+    leaderboardData: leaderboardData,
+    currentLeaderboard: currentLeaderboard,
+    battlesData: battlesData,
+    apiBaseUrl: apiBaseUrl
+  })
 
   if (leaderboardError || battlesError || positionsError) {
+    console.error('🔴 API Errors:', {
+      leaderboardError,
+      battlesError,
+      positionsError,
+      apiBaseUrl
+    })
+    
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
+        <div className="text-center max-w-md">
           <div className="text-red-500 text-xl mb-4">⚠️ Connection Error</div>
-          <div className="text-gray-400">
-            Unable to connect to F1 Analytics API. Please check if the backend server is running.
+          <div className="text-gray-400 mb-4">
+            Unable to connect to F1 Analytics API.
           </div>
+          <div className="text-xs text-gray-500 bg-gray-800 p-3 rounded mb-4">
+            <div><strong>API URL:</strong> {apiBaseUrl}</div>
+                         <div><strong>Trying:</strong> {apiBaseUrl}/leaderboard</div>
+            {leaderboardError && (
+              <div><strong>Error:</strong> {leaderboardError.message}</div>
+            )}
+          </div>
+          <button 
+            onClick={() => window.location.reload()}
+            className="f1-button text-sm"
+          >
+            Retry Connection
+          </button>
         </div>
       </div>
     )
