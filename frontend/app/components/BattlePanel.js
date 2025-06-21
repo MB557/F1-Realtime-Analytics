@@ -2,7 +2,7 @@
 
 export default function BattlePanel({ battles = [], drivers = [] }) {
   const getDriverInfo = (driverNumber) => {
-    return drivers.find(d => d.driverNumber === driverNumber) || {
+    return Array.isArray(drivers) ? drivers.find(d => d.driverNumber === driverNumber) : null || {
       driverName: `Driver ${driverNumber}`,
       teamColor: '#CCCCCC'
     }

@@ -6,29 +6,33 @@ import Link from 'next/link'
 import Header from '../../components/Header'
 import TelemetryDashboard from '../../components/TelemetryDashboard'
 import LoadingSpinner from '../../components/LoadingSpinner'
-import { getApiBaseUrl } from '../../utils/apiConfig'
+import { getApiUrl } from '../../utils/apiConfig'
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
 export default function DriverPageClient({ driverNumber }) {
-  const [apiBaseUrl, setApiBaseUrl] = useState('http://localhost:3001')
+  // Get API URL dynamically for each request
+  const apiUrl = getApiUrl()
 
-  // Set API base URL when component mounts
-  useEffect(() => {
-    setApiBaseUrl(getApiBaseUrl())
-  }, [])
-
-  const { data: driverData, error: driverError } = useSWR(
-    driverNumber ? `${apiBaseUrl}/driver/${driverNumber}` : null,
+  const { data: driverRawData, error: driverError } = useSWR(
+    driverNumber ? `${apiUrl}/driver/${driverNumber}` : null,
     fetcher,
     { refreshInterval: 2000 }
   )
 
-  const { data: leaderboardData } = useSWR(
-    `${apiBaseUrl}/leaderboard`,
+  const { data: leaderboardRawData } = useSWR(
+    `${apiUrl}/leaderboard`,
     fetcher,
     { refreshInterval: 5000 }
   )
+
+  // Extract data from API response
+  const driverData = driverRawData?.data || driverRawData
+  const leaderboardData = Array.isArray(leaderboardRawData?.data) 
+    ? leaderboardRawData.data 
+    : Array.isArray(leaderboardRawData) 
+      ? leaderboardRawData 
+      : []
 
   if (driverError) {
     return (

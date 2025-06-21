@@ -2,10 +2,14 @@
 export const getApiBaseUrl = () => {
   // Check if we're in browser and on Netlify (production)
   if (typeof window !== 'undefined') {
+    const hostname = window.location.hostname
+    console.log('🔧 Current hostname:', hostname)
+    
     // If we're on a netlify.app domain or any domain that's not localhost
-    if (window.location.hostname.includes('netlify.app') || 
-        (!window.location.hostname.includes('localhost') && 
-         !window.location.hostname.includes('127.0.0.1'))) {
+    if (hostname.includes('netlify.app') || 
+        (!hostname.includes('localhost') && 
+         !hostname.includes('127.0.0.1') &&
+         hostname !== '')) {
       console.log('🔧 Using Netlify Functions API:', '/.netlify/functions')
       return '/.netlify/functions'
     }
@@ -17,5 +21,8 @@ export const getApiBaseUrl = () => {
   return fallbackUrl
 }
 
-// Export a ready-to-use API URL
-export const API_BASE_URL = getApiBaseUrl() 
+// Helper function to get API URL safely (only call in components)
+export const getApiUrl = () => {
+  // Always call getApiBaseUrl() fresh to ensure window is available
+  return getApiBaseUrl()
+} 

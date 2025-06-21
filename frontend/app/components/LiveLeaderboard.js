@@ -11,7 +11,7 @@ export default function LiveLeaderboard({ data = [], onDriverSelect, selectedDri
       const changed = new Set()
       
       data.forEach(currentDriver => {
-        const previousDriver = previousData.find(p => p.driverNumber === currentDriver.driverNumber)
+        const previousDriver = Array.isArray(previousData) ? previousData.find(p => p.driverNumber === currentDriver.driverNumber) : null
         if (previousDriver && previousDriver.position !== currentDriver.position) {
           changed.add(currentDriver.driverNumber)
         }

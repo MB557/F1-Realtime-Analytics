@@ -5,7 +5,7 @@ import { useState } from 'react'
 export default function Header({ isConnected, lastUpdate, selectedDriver, onDriverSelect, drivers = [] }) {
   const [showDriverSelect, setShowDriverSelect] = useState(false)
 
-  const selectedDriverData = drivers.find(d => d.driverNumber === selectedDriver)
+  const selectedDriverData = Array.isArray(drivers) ? drivers.find(d => d.driverNumber === selectedDriver) : null
 
   return (
     <header className="bg-gray-900/95 backdrop-blur-sm border-b border-gray-700/50 sticky top-0 z-50">

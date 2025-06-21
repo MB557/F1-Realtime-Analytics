@@ -91,9 +91,38 @@ export default function Dashboard() {
   }, [wsData])
 
   // Get current data (WebSocket takes priority over SWR)
-  const currentLeaderboard = wsData?.data?.leaderboard || leaderboardData || []
-  const currentBattles = wsData?.data?.battles || battlesData || []
-  const currentPositions = wsData?.data?.positions || positionsData || []
+  // Extract data array from API response (API returns { success: true, data: [...] })
+  const currentLeaderboard = Array.isArray(wsData?.data?.leaderboard) 
+    ? wsData.data.leaderboard 
+    : Array.isArray(leaderboardData?.data) 
+      ? leaderboardData.data 
+      : Array.isArray(leaderboardData) 
+        ? leaderboardData 
+        : []
+        
+  const currentBattles = Array.isArray(wsData?.data?.battles) 
+    ? wsData.data.battles 
+    : Array.isArray(battlesData?.data) 
+      ? battlesData.data 
+      : Array.isArray(battlesData) 
+        ? battlesData 
+        : []
+        
+  const currentPositions = Array.isArray(wsData?.data?.positions) 
+    ? wsData.data.positions 
+    : Array.isArray(positionsData?.data) 
+      ? positionsData.data 
+      : Array.isArray(positionsData) 
+        ? positionsData 
+        : []
+
+  // Debug logging
+  console.log('🔧 Data check:', {
+    leaderboardData: leaderboardData,
+    currentLeaderboard: currentLeaderboard,
+    battlesData: battlesData,
+    apiBaseUrl: apiBaseUrl
+  })
 
   if (leaderboardError || battlesError || positionsError) {
     console.error('🔴 API Errors:', {
