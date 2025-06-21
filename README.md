@@ -4,7 +4,14 @@ A comprehensive Formula 1 analytics platform that provides real-time race data, 
 
 ## 🎬 Demo
 
-![F1 Analytics Demo](./assets/f1-analytics-demo.gif)
+### 📹 HD Video Demo (Crystal Clear Quality)
+
+[**▶️ Watch Full HD Demo Video**](./assets/f1-analytics-demo.mp4)
+
+> Click above to view the original 1920x912 HD video with perfect clarity!
+
+### 🖼️ GIF Demo (Auto-playing, High Quality)
+![F1 Analytics Demo](./assets/f1-analytics-demo-hq.gif)
 
 > **Watch the F1 Analytics Platform in action!** This demo showcases the real-time dashboard with live leaderboard, battle detection, telemetry data, and track positioning - all updating in real-time during an F1 session.
 
