@@ -317,30 +317,6 @@ npm run type-check
 }
 ```
 
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License. See `LICENSE` file for details.
-
-## ⚠️ Disclaimer
-
-This project is not associated with Formula 1 companies. F1, FORMULA ONE, FORMULA 1, FIA FORMULA ONE WORLD CHAMPIONSHIP, GRAND PRIX and related marks are trademarks of Formula One Licensing B.V.
-
-## 🙏 Acknowledgments
-
-- [OpenF1 API](https://openf1.org/) for providing real-time F1 data
-- [Next.js](https://nextjs.org/) for the frontend framework
-- [Express.js](https://expressjs.com/) for the backend framework
-- [Tailwind CSS](https://tailwindcss.com/) for styling
-- [SWR](https://swr.vercel.app/) for data fetching
-
 ---
 
 **Built with ❤️ for Formula 1 fans and developers** 
