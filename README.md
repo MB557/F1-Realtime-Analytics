@@ -7,7 +7,7 @@ A comprehensive Formula 1 analytics platform that provides real-time race data, 
 
 > **Watch the F1 Analytics Platform in action!** This demo showcases the real-time dashboard with live leaderboard, battle detection, telemetry data, and track positioning - all updating in real-time during an F1 session.
 
-### 🎯 Key Features Shown:
+### 🎯 Features:
 - **Live Leaderboard** with real-time position updates
 - **Battle Detection** highlighting close racing action  
 - **Telemetry Dashboard** with DRS, throttle, and brake data
